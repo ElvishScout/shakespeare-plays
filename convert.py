@@ -5,16 +5,12 @@ import shutil
 
 INPUT_DIR = pathlib.Path("./input")
 OUTPUT_DIR = pathlib.Path("./output")
-OUTPUT_PLAY_DIR = OUTPUT_DIR / "plays"
-OUTPUT_CSS_DIR = OUTPUT_DIR / "css"
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-OUTPUT_PLAY_DIR.mkdir(exist_ok=True)
 
 
 if (INPUT_DIR / "style.css").exists():
-    OUTPUT_CSS_DIR.mkdir(exist_ok=True)
-    shutil.copy(INPUT_DIR / "style.css", OUTPUT_CSS_DIR)
+    shutil.copy(INPUT_DIR / "style.css", OUTPUT_DIR)
 
 
 def write_html(path, style_path, content):
@@ -50,21 +46,21 @@ with open(INPUT_DIR / "data.csv", "r") as f:
             if curr_play != "":
                 play_index += "</ul>"
                 write_html(
-                    OUTPUT_PLAY_DIR / curr_play / f"{curr_act}.html",
-                    "../../css/style.css",
+                    OUTPUT_DIR / curr_play / f"{curr_act}.html",
+                    "../style.css",
                     act_content,
                 )
 
                 play_index += "</ul>"
                 write_html(
-                    OUTPUT_PLAY_DIR / curr_play / "index.html",
-                    "../../css/style.css",
+                    OUTPUT_DIR / curr_play / "index.html",
+                    "../style.css",
                     play_index,
                 )
 
                 play_index = ""
 
-            (OUTPUT_PLAY_DIR / play).mkdir(exist_ok=True)
+            (OUTPUT_DIR / play).mkdir(exist_ok=True)
 
             curr_play = play
             curr_act = ""
@@ -87,8 +83,8 @@ with open(INPUT_DIR / "data.csv", "r") as f:
                 play_index += "</ul>"
 
                 write_html(
-                    OUTPUT_PLAY_DIR / curr_play / f"{curr_act}.html",
-                    "../../css/style.css",
+                    OUTPUT_DIR / curr_play / f"{curr_act}.html",
+                    "../style.css",
                     act_content,
                 )
 
@@ -120,17 +116,17 @@ with open(INPUT_DIR / "data.csv", "r") as f:
             act_content += f'<p class="line">{player_line}</p>'
 
     write_html(
-        OUTPUT_PLAY_DIR / curr_play / f"{curr_act}.html",
-        "../../css/style.css",
+        OUTPUT_DIR / curr_play / f"{curr_act}.html",
+        "../style.css",
         act_content,
     )
 
     play_index += "</ul>"
     write_html(
-        OUTPUT_PLAY_DIR / curr_play / "index.html",
-        "../../css/style.css",
+        OUTPUT_DIR / curr_play / "index.html",
+        "../style.css",
         play_index,
     )
 
     plays_index += "</ul>"
-    write_html(OUTPUT_PLAY_DIR / "index.html", "../css/style.css", plays_index)
+    write_html(OUTPUT_DIR / "index.html", "./style.css", plays_index)
