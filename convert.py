@@ -3,13 +3,16 @@ import pathlib
 import shutil
 
 
-INPUT_DIR = pathlib.Path("./input")
-OUTPUT_DIR = pathlib.Path("./output")
+INPUT_DIR = pathlib.Path("./")
+OUTPUT_DIR = pathlib.Path("./")
+
+OUTPUT_PLAY_DIR = OUTPUT_DIR / "plays"
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+OUTPUT_PLAY_DIR.mkdir(exist_ok=True)
 
 
-if (INPUT_DIR / "style.css").exists():
+if (INPUT_DIR / "style.css").exists() and INPUT_DIR != OUTPUT_DIR:
     shutil.copy(INPUT_DIR / "style.css", OUTPUT_DIR)
 
 
@@ -46,21 +49,21 @@ with open(INPUT_DIR / "data.csv", "r") as f:
             if curr_play != "":
                 play_index += "</ul>"
                 write_html(
-                    OUTPUT_DIR / curr_play / f"{curr_act}.html",
-                    "../style.css",
+                    OUTPUT_PLAY_DIR / curr_play / f"{curr_act}.html",
+                    "../../style.css",
                     act_content,
                 )
 
                 play_index += "</ul>"
                 write_html(
-                    OUTPUT_DIR / curr_play / "index.html",
-                    "../style.css",
+                    OUTPUT_PLAY_DIR / curr_play / "index.html",
+                    "../../style.css",
                     play_index,
                 )
 
                 play_index = ""
 
-            (OUTPUT_DIR / play).mkdir(exist_ok=True)
+            (OUTPUT_PLAY_DIR / play).mkdir(exist_ok=True)
 
             curr_play = play
             curr_act = ""
@@ -75,7 +78,7 @@ with open(INPUT_DIR / "data.csv", "r") as f:
             play_index += '<ul class="act-list">'
 
             plays_index += (
-                f'<li class="play-link"><a href="./{play}/index.html">{play}</a></li>'
+                f'<li class="play-link"><a href="./plays/{play}/index.html">{play}</a></li>'
             )
 
         if player_line.startswith("ACT"):
@@ -83,8 +86,8 @@ with open(INPUT_DIR / "data.csv", "r") as f:
                 play_index += "</ul>"
 
                 write_html(
-                    OUTPUT_DIR / curr_play / f"{curr_act}.html",
-                    "../style.css",
+                    OUTPUT_PLAY_DIR / curr_play / f"{curr_act}.html",
+                    "../../style.css",
                     act_content,
                 )
 
@@ -104,7 +107,9 @@ with open(INPUT_DIR / "data.csv", "r") as f:
             curr_scene = player_line
 
             scene_number += 1
-            act_content += f'<p id="{scene_number}" class="scene-title">{player_line}</p>'
+            act_content += (
+                f'<p id="{scene_number}" class="scene-title">{player_line}</p>'
+            )
 
             play_index += f'<li class="scene-link"><a href="./{curr_act}.html#{scene_number}">{player_line}</a></li>'
         elif act_scene_line == "":
@@ -116,15 +121,15 @@ with open(INPUT_DIR / "data.csv", "r") as f:
             act_content += f'<p class="line">{player_line}</p>'
 
     write_html(
-        OUTPUT_DIR / curr_play / f"{curr_act}.html",
-        "../style.css",
+        OUTPUT_PLAY_DIR / curr_play / f"{curr_act}.html",
+        "../../style.css",
         act_content,
     )
 
     play_index += "</ul>"
     write_html(
-        OUTPUT_DIR / curr_play / "index.html",
-        "../style.css",
+        OUTPUT_PLAY_DIR / curr_play / "index.html",
+        "../../style.css",
         play_index,
     )
 
