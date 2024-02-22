@@ -1,0 +1,59 @@
+.toc-title {
+  margin: 1em 0 2em 0;
+  font-size: 2em;
+  font-weight: bold black;
+  text-align: center;
+}
+
+.play-title {
+  margin: 1em 0 2em 0;
+  font-size: 2em;
+  font-weight: bold black;
+  text-align: center;
+}
+
+.play-title:has(+ .act-title) {
+  margin-bottom: 0;
+}
+
+.act-title {
+  margin: 1em 0 1em 0;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.scene-title {
+  margin: 2em 0 2em 0;
+  font-size: 1.25em;
+  text-align: center;
+}
+
+.action {
+  margin: 1em 0 1em 0;
+  font-style: italic;
+  font-size: 1em;
+}
+
+.action::before {
+  content: "[ ";
+}
+
+.action::after {
+  content: " ]";
+}
+
+.player {
+  margin: 2em 0 0.5em 0;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.player::after {
+  content: ":";
+}
+
+.line {
+  margin: 0.5em 0 0.5em 0;
+  padding-left: 4em;
+  font-size: 1em;
+}
