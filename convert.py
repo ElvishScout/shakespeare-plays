@@ -3,26 +3,35 @@ import pathlib
 import shutil
 
 
-INPUT_DIR = pathlib.Path("./")
-OUTPUT_DIR = pathlib.Path("./")
+BASE_DIR = pathlib.Path("./")
 
-OUTPUT_PLAY_DIR = OUTPUT_DIR / "plays"
+DATA_DIR = BASE_DIR / "data"
+CSS_DIR = BASE_DIR / "css"
+OUTPUT_DIR = BASE_DIR / "docs"
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-OUTPUT_PLAY_DIR.mkdir(exist_ok=True)
 
 
-if (INPUT_DIR / "style.css").exists() and INPUT_DIR != OUTPUT_DIR:
-    shutil.copy(INPUT_DIR / "style.css", OUTPUT_DIR)
+if CSS_DIR.exists():
+    shutil.copy(CSS_DIR / "style.css", OUTPUT_DIR)
 
 
-def write_html(path, style_path, content):
+def write_html(path, content):
+    output_dir = pathlib.Path(path).parent
+    output_dir_rel = pathlib.Path("./")
+
+    while OUTPUT_DIR != output_dir:
+        output_dir = output_dir.parent
+        output_dir_rel /= ".."
+
+    style_path = output_dir_rel / "style.css"
+
     with open(path, "w") as f:
-        f.write(f'<link rel="stylesheet" href="{style_path}"/>')
+        f.write(f'<link rel="stylesheet" href="{style_path.as_posix()}"/>')
         f.write(content)
 
 
-with open(INPUT_DIR / "data.csv", "r") as f:
+with open(DATA_DIR / "data.csv", "r") as f:
     reader = csv.reader(f)
 
     plays_index = ""
@@ -49,21 +58,19 @@ with open(INPUT_DIR / "data.csv", "r") as f:
             if curr_play != "":
                 play_index += "</ul>"
                 write_html(
-                    OUTPUT_PLAY_DIR / curr_play / f"{curr_act}.html",
-                    "../../style.css",
+                    OUTPUT_DIR / curr_play / f"{curr_act}.html",
                     act_content,
                 )
 
                 play_index += "</ul>"
                 write_html(
-                    OUTPUT_PLAY_DIR / curr_play / "index.html",
-                    "../../style.css",
+                    OUTPUT_DIR / curr_play / "index.html",
                     play_index,
                 )
 
                 play_index = ""
 
-            (OUTPUT_PLAY_DIR / play).mkdir(exist_ok=True)
+            (OUTPUT_DIR / play).mkdir(exist_ok=True)
 
             curr_play = play
             curr_act = ""
@@ -78,7 +85,7 @@ with open(INPUT_DIR / "data.csv", "r") as f:
             play_index += '<ul class="act-list">'
 
             plays_index += (
-                f'<li class="play-link"><a href="./plays/{play}/index.html">{play}</a></li>'
+                f'<li class="play-link"><a href="./{play}/index.html">{play}</a></li>'
             )
 
         if player_line.startswith("ACT"):
@@ -86,8 +93,7 @@ with open(INPUT_DIR / "data.csv", "r") as f:
                 play_index += "</ul>"
 
                 write_html(
-                    OUTPUT_PLAY_DIR / curr_play / f"{curr_act}.html",
-                    "../../style.css",
+                    OUTPUT_DIR / curr_play / f"{curr_act}.html",
                     act_content,
                 )
 
@@ -121,17 +127,15 @@ with open(INPUT_DIR / "data.csv", "r") as f:
             act_content += f'<p class="line">{player_line}</p>'
 
     write_html(
-        OUTPUT_PLAY_DIR / curr_play / f"{curr_act}.html",
-        "../../style.css",
+        OUTPUT_DIR / curr_play / f"{curr_act}.html",
         act_content,
     )
 
     play_index += "</ul>"
     write_html(
-        OUTPUT_PLAY_DIR / curr_play / "index.html",
-        "../../style.css",
+        OUTPUT_DIR / curr_play / "index.html",
         play_index,
     )
 
     plays_index += "</ul>"
-    write_html(OUTPUT_DIR / "index.html", "./style.css", plays_index)
+    write_html(OUTPUT_DIR / "index.html", plays_index)
