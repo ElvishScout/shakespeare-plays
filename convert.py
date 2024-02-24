@@ -16,7 +16,7 @@ if CSS_DIR.exists():
     shutil.copy(CSS_DIR / "style.css", OUTPUT_DIR)
 
 
-def write_html(path, content):
+def write_html(path, title, content):
     output_dir = pathlib.Path(path).parent
     output_dir_rel = pathlib.Path("./")
 
@@ -27,8 +27,15 @@ def write_html(path, content):
     style_path = output_dir_rel / "style.css"
 
     with open(path, "w") as f:
-        f.write(f'<link rel="stylesheet" href="{style_path.as_posix()}"/>')
-        f.write(content)
+        f.write(
+            "<html>"
+            + "<head>"
+            + f"<title>{title}</title>"
+            + f'<link rel="stylesheet" href="{style_path.as_posix()}"/>'
+            + "</head>"
+            + f"<body>{content}</body>"
+            + "</html>"
+        )
 
 
 with open(DATA_DIR / "data.csv", "r") as f:
@@ -59,12 +66,14 @@ with open(DATA_DIR / "data.csv", "r") as f:
                 play_index += "</ul>"
                 write_html(
                     OUTPUT_DIR / curr_play / f"{curr_act}.html",
+                    f"{curr_play}: {curr_act}",
                     act_content,
                 )
 
                 play_index += "</ul>"
                 write_html(
                     OUTPUT_DIR / curr_play / "index.html",
+                    curr_play,
                     play_index,
                 )
 
@@ -94,6 +103,7 @@ with open(DATA_DIR / "data.csv", "r") as f:
 
                 write_html(
                     OUTPUT_DIR / curr_play / f"{curr_act}.html",
+                    f"{curr_play}: {curr_act}",
                     act_content,
                 )
 
@@ -128,14 +138,16 @@ with open(DATA_DIR / "data.csv", "r") as f:
 
     write_html(
         OUTPUT_DIR / curr_play / f"{curr_act}.html",
+        f"{curr_play}: {curr_act}",
         act_content,
     )
 
     play_index += "</ul>"
     write_html(
         OUTPUT_DIR / curr_play / "index.html",
+        curr_play,
         play_index,
     )
 
     plays_index += "</ul>"
-    write_html(OUTPUT_DIR / "index.html", plays_index)
+    write_html(OUTPUT_DIR / "index.html", "Table of Contents", plays_index)
