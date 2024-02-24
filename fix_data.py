@@ -53,5 +53,7 @@ for row in reader:
             [index, play, player_linenumber, act_scene_line, player, player_line]
         )
 
+    last_player_line = player_line
+
 f.close()
 g.close()
