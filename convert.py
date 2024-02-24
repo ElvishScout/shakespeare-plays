@@ -99,7 +99,7 @@ with open(DATA_DIR / "data.csv", "r") as f:
 
         if player_line.startswith("ACT"):
             if curr_act != "":
-                play_index += "</ul>"
+                play_index += "</ul></li>"
 
                 write_html(
                     OUTPUT_DIR / curr_play / f"{curr_act}.html",
@@ -116,7 +116,7 @@ with open(DATA_DIR / "data.csv", "r") as f:
             act_content += f'<p class="play-title">{play}</p>'
             act_content += f'<p class="act-title">{player_line}</p>'
 
-            play_index += f'<li class="act-link"><a href="./{curr_act}.html">{player_line}</a></li>'
+            play_index += f'<li class="act-link"><a href="./{curr_act}.html">{player_line}</a>'
             play_index += f'<ul class="scene-list">'
 
         elif player_line.startswith("SCENE") or player_line.startswith("PROLOGUE"):
