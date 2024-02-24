@@ -21,7 +21,7 @@ for row in reader:
         writer.writerow(row)
         continue
 
-    if index == 88595:
+    if index == 88594:
         index += 1
         writer.writerow(
             [

@@ -38,7 +38,7 @@ def write_html(path, title, content):
         )
 
 
-with open(DATA_DIR / "data.csv", "r") as f:
+with open(DATA_DIR / "data_fixed.csv", "r") as f:
     reader = csv.reader(f)
 
     plays_index = ""
@@ -97,7 +97,7 @@ with open(DATA_DIR / "data.csv", "r") as f:
                 f'<li class="play-link"><a href="./{play}/index.html">{play}</a></li>'
             )
 
-        if player_line.startswith("ACT"):
+        if player == "ACT TITLE":
             if curr_act != "":
                 play_index += "</ul></li>"
 
@@ -116,10 +116,12 @@ with open(DATA_DIR / "data.csv", "r") as f:
             act_content += f'<p class="play-title">{play}</p>'
             act_content += f'<p class="act-title">{player_line}</p>'
 
-            play_index += f'<li class="act-link"><a href="./{curr_act}.html">{player_line}</a>'
+            play_index += (
+                f'<li class="act-link"><a href="./{curr_act}.html">{player_line}</a>'
+            )
             play_index += f'<ul class="scene-list">'
 
-        elif player_line.startswith("SCENE") or player_line.startswith("PROLOGUE"):
+        elif player == "SCENE TITLE":
             curr_scene = player_line
 
             scene_number += 1
@@ -128,8 +130,10 @@ with open(DATA_DIR / "data.csv", "r") as f:
             )
 
             play_index += f'<li class="scene-link"><a href="./{curr_act}.html#{scene_number}">{player_line}</a></li>'
-        elif act_scene_line == "":
+
+        elif player == "ACTION":
             act_content += f'<p class="action">{player_line}</p>'
+
         else:
             if player != curr_player:
                 curr_player = player
