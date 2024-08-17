@@ -59,6 +59,15 @@
 
 .line {
   margin: 0.5em 0 0.5em 0;
-  padding-left: 4em;
   font-size: 1em;
+}
+
+@media (min-width: 720px) {
+  .line {
+    padding-left: 4em;
+  }
+}
+
+ul {
+  padding-left: 1.25em;
 }

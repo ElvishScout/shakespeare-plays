@@ -28,8 +28,11 @@ def write_html(path, title, content):
 
     with open(path, "w") as f:
         f.write(
-            f"<html>"
+            f"<!DOCTYPE html>"
+            f'<html lang="en">'
             f"<head>"
+            f'<meta charset="UTF-8">'
+            f'<meta name="viewport" content="width=device-width, initial-scale=1.0">'
             f"<title>{title}</title>"
             f'<link rel="stylesheet" href="{style_path.as_posix()}"/>'
             f"</head>"
