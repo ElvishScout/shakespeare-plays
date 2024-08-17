@@ -28,13 +28,13 @@ def write_html(path, title, content):
 
     with open(path, "w") as f:
         f.write(
-            "<html>"
-            + "<head>"
-            + f"<title>{title}</title>"
-            + f'<link rel="stylesheet" href="{style_path.as_posix()}"/>'
-            + "</head>"
-            + f"<body>{content}</body>"
-            + "</html>"
+            f"<html>"
+            f"<head>"
+            f"<title>{title}</title>"
+            f'<link rel="stylesheet" href="{style_path.as_posix()}"/>'
+            f"</head>"
+            f'<body><div class="container">{content}</div></body>'
+            f"</html>"
         )
 
 
@@ -93,9 +93,7 @@ with open(DATA_DIR / "data_fixed.csv", "r") as f:
             play_index += f'<p class="play-title">{play}</p>'
             play_index += '<ul class="act-list">'
 
-            plays_index += (
-                f'<li class="play-link"><a href="./{play}/index.html">{play}</a></li>'
-            )
+            plays_index += f'<li class="play-link"><a href="./{play}/index.html">{play}</a></li>'
 
         if player == "ACT TITLE":
             if curr_act != "":
@@ -116,18 +114,14 @@ with open(DATA_DIR / "data_fixed.csv", "r") as f:
             act_content += f'<p class="play-title">{play}</p>'
             act_content += f'<p class="act-title">{player_line}</p>'
 
-            play_index += (
-                f'<li class="act-link"><a href="./{curr_act}.html">{player_line}</a>'
-            )
+            play_index += f'<li class="act-link"><a href="./{curr_act}.html">{player_line}</a>'
             play_index += f'<ul class="scene-list">'
 
         elif player == "SCENE TITLE":
             curr_scene = player_line
 
             scene_number += 1
-            act_content += (
-                f'<p id="{scene_number}" class="scene-title">{player_line}</p>'
-            )
+            act_content += f'<p id="{scene_number}" class="scene-title">{player_line}</p>'
 
             play_index += f'<li class="scene-link"><a href="./{curr_act}.html#{scene_number}">{player_line}</a></li>'
 
